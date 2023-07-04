@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -17,6 +18,19 @@ app.get('/', (req, res) => {
   res.send("Welcome to the Node.js server!");
 });
 
+app.get('/file/:filename', async (req, res) => {
+  const filename = req.params.filename;
+  const filepath = path.join(__dirname, filename);
+
+  try{
+    const result = await readFileAsync(filepath);
+    res.send(result)
+  }
+  catch(err) {
+    res.send(err.message);
+  }
+});
+
 app.get('/users', (req, res) => {
   res.send(JSON.stringify(users));
 });
@@ -26,7 +40,6 @@ app.get('/users/:id', (req, res) => {
 });
 
 app.post('/users', (req, res) => {
-  console.log(req.body.user);
   const user = req.body.user;
   users.push(user);
   

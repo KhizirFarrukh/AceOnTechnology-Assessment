@@ -1,14 +1,12 @@
 const fs = require('fs');
 
 async function readFileAsync(filepath) {
-  try {
-    await fs.readFileAsync(filepath, (err, data) => {
-      if(err) throw err;
-
+  return new Promise((resolve, reject) => {
+    fs.readFile(filepath, "utf8", (err, data) => {
+      if(err) reject(err);
+      resolve(data);
     });
-  } catch(exception) {
-    console.log(exception);
-  }
+  });
 }
 
 module.exports = readFileAsync;
